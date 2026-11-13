@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["MediaConverterModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.mediaconverter.MediaConverterModule"]
+  }
+}

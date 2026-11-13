@@ -1,0 +1,10 @@
+{
+  "name": "audio-trimmer",
+  "version": "1.0.0",
+  "description": "Native audio trimming module for Expo",
+  "main": "src/AudioTrimmerModule.ts",
+  "types": "src/AudioTrimmer.types.ts",
+  "peerDependencies": {
+    "expo": "*"
+  }
+}
