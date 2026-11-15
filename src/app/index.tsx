@@ -12,13 +12,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AudioConvertSection from "../components/audio-convert-section";
 import AudioTrimSection from "../components/audio-trim-section";
 import FormatConvertSection from "../components/format-convert-section";
 import VideoEditorSection from "../components/video-editor-section";
 import VideoMergeSection from "../components/video-merge-section";
 import SplashScreen from "./splash";
 
-type ActiveSection = "convert" | "merge" | "audio" | null;
+type ActiveSection = "convert" | "merge" | "audio" | "audioConvert" | null;
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -146,6 +147,14 @@ export default function HomeScreen() {
         <AudioTrimSection
           isOpen={activeSection === "audio"}
           onToggle={() => toggleSection("audio")}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          setStatusText={setStatusText}
+        />
+
+        <AudioConvertSection
+          isOpen={activeSection === "audioConvert"}
+          onToggle={() => toggleSection("audioConvert")}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           setStatusText={setStatusText}

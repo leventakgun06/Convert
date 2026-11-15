@@ -1,0 +1,9 @@
+{
+  "name": "video-converter",
+  "version": "1.0.0",
+  "description": "Native MP4 to MOV video converter for Expo using FFmpegKitNext",
+  "main": "src/VideoConverterModule.ts",
+  "peerDependencies": {
+    "expo": "*"
+  }
+}

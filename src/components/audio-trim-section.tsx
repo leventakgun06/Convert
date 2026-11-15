@@ -1,4 +1,3 @@
-
 import * as DocumentPicker from "expo-document-picker";
 import * as Sharing from "expo-sharing";
 import { useState } from "react";
@@ -55,10 +54,7 @@ export default function AudioTrimSection({
     } catch (error) {
       console.error("Ses seçme hatası:", error);
 
-      Alert.alert(
-        t("common.error"),
-        t("audioTrim.pickError"),
-      );
+      Alert.alert(t("common.error"), t("audioTrim.pickError"));
     }
   };
 
@@ -74,10 +70,7 @@ export default function AudioTrimSection({
       startSeconds < 0 ||
       endSeconds <= startSeconds
     ) {
-      Alert.alert(
-        t("audioTrim.invalidTitle"),
-        t("audioTrim.invalidDuration"),
-      );
+      Alert.alert(t("audioTrim.invalidTitle"), t("audioTrim.invalidDuration"));
       return;
     }
 
@@ -98,7 +91,7 @@ export default function AudioTrimSection({
       );
 
       await Sharing.shareAsync(result.uri, {
-        mimeType: "audio/mp4",
+        mimeType: "audio/x-m4a",
         dialogTitle: t("audioTrim.share"),
       });
     } catch (error) {
@@ -108,9 +101,7 @@ export default function AudioTrimSection({
 
       Alert.alert(
         t("audioTrim.errorTitle"),
-        error instanceof Error
-          ? error.message
-          : t("audioTrim.trimError"),
+        error instanceof Error ? error.message : t("audioTrim.trimError"),
       );
     } finally {
       setIsLoading(false);
@@ -128,19 +119,13 @@ export default function AudioTrimSection({
           <Text style={styles.accordionIcon}>🎧</Text>
 
           <View>
-            <Text style={styles.accordionTitle}>
-              {t("audioTrim.title")}
-            </Text>
+            <Text style={styles.accordionTitle}>{t("audioTrim.title")}</Text>
 
-            <Text style={styles.accordionSub}>
-              {t("audioTrim.subtitle")}
-            </Text>
+            <Text style={styles.accordionSub}>{t("audioTrim.subtitle")}</Text>
           </View>
         </View>
 
-        <Text style={styles.chevron}>
-          {isOpen ? "▲" : "▼"}
-        </Text>
+        <Text style={styles.chevron}>{isOpen ? "▲" : "▼"}</Text>
       </TouchableOpacity>
 
       {isOpen && (
@@ -165,9 +150,7 @@ export default function AudioTrimSection({
 
               <View style={styles.rowInputs}>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.label}>
-                    {t("audioTrim.start")}
-                  </Text>
+                  <Text style={styles.label}>{t("audioTrim.start")}</Text>
 
                   <TextInput
                     style={styles.timeInput}
@@ -180,9 +163,7 @@ export default function AudioTrimSection({
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.label}>
-                    {t("audioTrim.end")}
-                  </Text>
+                  <Text style={styles.label}>{t("audioTrim.end")}</Text>
 
                   <TextInput
                     style={styles.timeInput}

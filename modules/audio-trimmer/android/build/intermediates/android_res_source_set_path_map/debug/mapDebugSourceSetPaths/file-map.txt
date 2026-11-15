@@ -1,9 +1,0 @@
-expo.modules.audiotrimmer.audio-trimmer-pngs-0 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/build/generated/res/pngs/debug
-expo.modules.audiotrimmer.audio-trimmer-updated_navigation_xml-1 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/build/generated/updated_navigation_xml/debug
-expo.modules.audiotrimmer.audio-trimmer-mergeDebugResources-2 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
-expo.modules.audiotrimmer.audio-trimmer-mergeDebugResources-3 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
-expo.modules.audiotrimmer.audio-trimmer-debug-4 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/build/intermediates/merged_res/debug/mergeDebugResources
-expo.modules.audiotrimmer.audio-trimmer-debug-5 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/build/intermediates/packaged_res/debug/packageDebugResources
-expo.modules.audiotrimmer.audio-trimmer-debug-6 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/src/debug/res
-expo.modules.audiotrimmer.audio-trimmer-main-7 /Users/leventakgun/Desktop/ReactExpo/Convert/modules/audio-trimmer/android/src/main/res
-gradleHome-0 /Users/leventakgun/.gradle

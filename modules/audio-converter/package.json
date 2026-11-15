@@ -1,0 +1,9 @@
+{
+  "name": "audio-converter",
+  "version": "1.0.0",
+  "description": "Native MP3 to M4A audio converter for Expo",
+  "main": "src/AudioConverterModule.ts",
+  "peerDependencies": {
+    "expo": "*"
+  }
+}

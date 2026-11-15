@@ -1,4 +1,3 @@
-
 import Slider from "@react-native-community/slider";
 import * as ImagePicker from "expo-image-picker";
 import * as Sharing from "expo-sharing";
@@ -8,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import {
   Alert,
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -93,7 +93,9 @@ export default function VideoEditorSection({
   };
 
   // Video Kesme
-  const trimVideo = async () => {
+
+  // Video Kesme İşlemi
+  const performTrimVideo = async () => {
     try {
       setIsLoading(true);
       setStatusText(t("videoEditor.trimLoading"));
@@ -112,13 +114,45 @@ export default function VideoEditorSection({
       });
     } catch (error) {
       console.error("Video kesme hatası:", error);
-      Alert.alert(
-        t("common.error"),
-        t("videoEditor.trimError"),
-      );
+
+      Alert.alert(t("common.error"), t("videoEditor.trimError"));
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Video boyutunu kontrol et
+  const trimVideo = async () => {
+    const warningLimit = 8 * 1024 * 1024;
+
+    if (
+      Platform.OS === "android" &&
+      videoSize !== null &&
+      videoSize > warningLimit
+    ) {
+      Alert.alert(
+        t("videoEditor.trimLargeFileTitle"),
+        t("videoEditor.trimLargeFileMessage", {
+          size: formatFileSize(videoSize),
+        }),
+        [
+          {
+            text: t("videoEditor.trimLargeFileCancel"),
+            style: "cancel",
+          },
+          {
+            text: t("videoEditor.trimLargeFileContinue"),
+            onPress: () => {
+              void performTrimVideo();
+            },
+          },
+        ],
+      );
+
+      return;
+    }
+
+    await performTrimVideo();
   };
 
   // Albüm Kapağı Seçme
@@ -126,7 +160,7 @@ export default function VideoEditorSection({
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
-        allowsEditing: true,
+        allowsEditing: false,
         aspect: [1, 1],
         quality: 1,
       });
@@ -137,10 +171,7 @@ export default function VideoEditorSection({
       }
     } catch (error) {
       console.error("Kapak görseli seçme hatası:", error);
-      Alert.alert(
-        t("common.error"),
-        t("videoEditor.artworkError"),
-      );
+      Alert.alert(t("common.error"), t("videoEditor.artworkError"));
     }
   };
 
@@ -192,9 +223,7 @@ export default function VideoEditorSection({
 
       Alert.alert(
         t("common.error"),
-        error instanceof Error
-          ? error.message
-          : t("videoEditor.extractError"),
+        error instanceof Error ? error.message : t("videoEditor.extractError"),
       );
     } finally {
       setIsLoading(false);
@@ -215,8 +244,7 @@ export default function VideoEditorSection({
 
       setCompressedFileSize(result.size);
 
-      const savedBytes =
-        videoSize !== null ? videoSize - result.size : null;
+      const savedBytes = videoSize !== null ? videoSize - result.size : null;
 
       if (savedBytes !== null && savedBytes > 0) {
         setStatusText(
@@ -242,10 +270,7 @@ export default function VideoEditorSection({
       console.error("Video sıkıştırma hatası:", error);
       setStatusText(t("videoEditor.compressFailed"));
 
-      Alert.alert(
-        t("common.error"),
-        t("videoEditor.compressError"),
-      );
+      Alert.alert(t("common.error"), t("videoEditor.compressError"));
     } finally {
       setIsLoading(false);
     }
@@ -260,9 +285,7 @@ export default function VideoEditorSection({
       <View style={styles.actionContainer}>
         {/* Video Kesme */}
         <View style={styles.cardBox}>
-          <Text style={styles.sectionTitle}>
-            {t("videoEditor.trimTitle")}
-          </Text>
+          <Text style={styles.sectionTitle}>{t("videoEditor.trimTitle")}</Text>
 
           <Text style={styles.label}>
             {t("videoEditor.start")}: {formatTime(startTime)} ({startTime} sn)
@@ -301,9 +324,7 @@ export default function VideoEditorSection({
             onPress={trimVideo}
             disabled={isLoading}
           >
-            <Text style={styles.actionButtonText}>
-              {t("videoEditor.trim")}
-            </Text>
+            <Text style={styles.actionButtonText}>{t("videoEditor.trim")}</Text>
           </TouchableOpacity>
         </View>
 
@@ -357,7 +378,9 @@ export default function VideoEditorSection({
             disabled={isLoading}
           >
             <Text style={styles.actionButtonText}>
-              {t("videoEditor.extract")}
+              {isLoading
+                ? t("videoEditor.extractLoading")
+                : t("videoEditor.extract")}
             </Text>
           </TouchableOpacity>
 
@@ -407,17 +430,13 @@ export default function VideoEditorSection({
 
             {compressedFileSize !== null && (
               <Text style={styles.fileInfoText}>
-                {t("videoEditor.newSize")}:{" "}
-                {formatFileSize(compressedFileSize)}
+                {t("videoEditor.newSize")}: {formatFileSize(compressedFileSize)}
               </Text>
             )}
           </View>
 
           <TouchableOpacity
-            style={[
-              styles.compressButton,
-              isLoading && styles.disabledButton,
-            ]}
+            style={[styles.compressButton, isLoading && styles.disabledButton]}
             onPress={compressVideo}
             disabled={isLoading}
           >
@@ -432,9 +451,7 @@ export default function VideoEditorSection({
           onPress={handleReset}
           disabled={isLoading}
         >
-          <Text style={styles.resetButtonText}>
-            {t("videoEditor.reset")}
-          </Text>
+          <Text style={styles.resetButtonText}>{t("videoEditor.reset")}</Text>
         </TouchableOpacity>
       </View>
     </View>

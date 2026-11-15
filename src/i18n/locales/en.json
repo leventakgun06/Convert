@@ -29,8 +29,8 @@
     "removeArtwork": "Remove",
     "artworkAdding": "Adding album artwork to M4A file...",
     "extractTitle": "🎵 Extract Audio (M4A)",
-    "extract": "Convert to M4A",
-    "extractLoading": "Extracting audio from video...",
+    "extract": "M4A -> Convert",
+    "extractLoading": "M4A -> Converting...",
     "extractSuccess": "Audio extracted successfully! Size: {{size}}",
     "extractArtworkSuccess": "Audio and album artwork are ready! Size: {{size}}",
     "extractFailed": "Failed to create M4A file.",
@@ -51,7 +51,11 @@
     "compressFailed": "Compression failed.",
     "compressError": "There was a problem compressing the video.",
     "compressShare": "Share compressed video",
-    "reset": "Close Video / Select New"
+    "reset": "Close Video / Select New",
+    "trimLargeFileTitle": "Video Size Warning",
+    "trimLargeFileMessage": "Your selected video is {{size}}. Large videos may cause trimming problems on some Android devices. Do you want to continue?",
+    "trimLargeFileCancel": "Cancel",
+    "trimLargeFileContinue": "Continue"
   },
   "common": {
     "cancel": "Cancel",
@@ -62,9 +66,10 @@
     "selectFile": "Select File",
     "ready": "Ready for a new operation."
   },
+
   "formatConvert": {
     "title": "Format Conversion",
-    "subtitle": "MOV → MP4 Converter",
+    "subtitle": "MOV → MP4 and MP4 → MOV converter",
     "selectFile": "Select File (MOV / MP4)",
     "fileSelected": "Video selected for conversion.",
     "selected": "Selected",
@@ -72,6 +77,12 @@
     "converting": "Converting MOV → MP4...",
     "success": "MP4 conversion successful!",
     "share": "Share MP4 video",
+    "convertingMov": "Converting MP4 → MOV...",
+    "successMov": "MOV conversion successful!",
+    "convertMov": "Convert to MOV",
+    "shareMov": "Share MOV video",
+    "convertErrorMov": "Video could not be converted to MOV.",
+    "unsupportedFormat": "Unsupported file format.",
     "clear": "Clear File",
     "errorTitle": "Conversion Error",
     "pickError": "There was a problem selecting the file.",
@@ -83,7 +94,7 @@
     "addVideo": "+ Add Video",
     "selectedCount": "Number of selected videos: {{count}}",
     "fileSelected": "{{count}} video(s) selected.",
-    "merge": "Merge and Share Videos",
+    "merge": "Merge Videos",
     "clear": "Clear List",
     "converting": "Merging videos...",
     "success": "Videos merged! Total duration: {{duration}}",
@@ -125,7 +136,26 @@
     "languageChanged": "App language changed."
   },
   "splash": {
-  "subtitle": "Media Editing and Conversion Studio",
-  "loading": "Loading..."
-}
+    "subtitle": "Media Editing and Conversion Studio",
+    "loading": "Loading..."
+  },
+  "audioConvert": {
+    "title": "Audio Conversion",
+    "subtitle": "MP3 → M4A audio converter",
+    "selectAudio": "Select MP3 File",
+    "selectAnother": "Select Another MP3 File",
+    "selected": "Selected",
+    "fileSelected": "MP3 file selected.",
+    "mp3Only": "Please select an MP3 file only.",
+    "pickError": "There was a problem selecting the MP3 file.",
+    "convert": "Convert to M4A",
+    "converting": "Converting MP3 → M4A...",
+    "success": "Audio successfully converted to M4A!",
+    "failed": "Audio conversion failed.",
+    "share": "Share M4A audio file",
+    "shareError": "There was a problem sharing the M4A file.",
+    "clear": "Clear File Selection",
+    "errorTitle": "Audio Conversion Error",
+    "convertError": "The MP3 file could not be converted to M4A."
+  }
 }

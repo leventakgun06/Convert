@@ -1,16 +1,11 @@
-
 import * as DocumentPicker from "expo-document-picker";
 import * as Sharing from "expo-sharing";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 import MediaConverter from "../../modules/media-converter/src/MediaConverterModule";
+import { convertMp4ToMov } from "../../modules/video-converter/src/VideoConverterModule";
 
 interface FormatConvertSectionProps {
   isOpen: boolean;
@@ -32,6 +27,11 @@ export default function FormatConvertSection({
   const [selectedUri, setSelectedUri] = useState<string | null>(null);
   const [selectedName, setSelectedName] = useState("");
 
+  const selectedExtension = selectedName.split(".").pop()?.toLowerCase();
+
+  const isMp4 = selectedExtension === "mp4";
+  const isMov = selectedExtension === "mov";
+
   const pickConvertFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -41,19 +41,19 @@ export default function FormatConvertSection({
 
       if (!result.canceled && result.assets.length > 0) {
         const asset = result.assets[0];
+
         setSelectedUri(asset.uri);
         setSelectedName(asset.name);
         setStatusText(t("formatConvert.fileSelected"));
       }
     } catch (error) {
       console.error("Dosya seçme hatası:", error);
-      Alert.alert(
-        t("common.error"),
-        t("formatConvert.pickError"),
-      );
+
+      Alert.alert(t("common.error"), t("formatConvert.pickError"));
     }
   };
 
+  // MOV → MP4
   const convertVideoToMp4 = async () => {
     if (!selectedUri) return;
 
@@ -61,8 +61,7 @@ export default function FormatConvertSection({
       setIsLoading(true);
       setStatusText(t("formatConvert.converting"));
 
-      const resultUri =
-        await MediaConverter.convertVideoToMp4(selectedUri);
+      const resultUri = await MediaConverter.convertVideoToMp4(selectedUri);
 
       setStatusText(t("formatConvert.success"));
 
@@ -71,7 +70,7 @@ export default function FormatConvertSection({
         dialogTitle: t("formatConvert.share"),
       });
     } catch (error) {
-      console.error("MP4 dönüştürme hatası:", error);
+      console.error("MOV → MP4 dönüştürme hatası:", error);
 
       Alert.alert(
         t("formatConvert.errorTitle"),
@@ -82,6 +81,42 @@ export default function FormatConvertSection({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // MP4 → MOV
+  const convertVideoToMov = async () => {
+    if (!selectedUri) return;
+
+    try {
+      setIsLoading(true);
+      setStatusText(t("formatConvert.convertingMov"));
+
+      const resultUri = await convertMp4ToMov(selectedUri);
+
+      setStatusText(t("formatConvert.successMov"));
+
+      await Sharing.shareAsync(resultUri, {
+        mimeType: "video/quicktime",
+        dialogTitle: t("formatConvert.shareMov"),
+      });
+    } catch (error) {
+      console.error("MP4 → MOV dönüştürme hatası:", error);
+
+      Alert.alert(
+        t("formatConvert.errorTitle"),
+        error instanceof Error
+          ? error.message
+          : t("formatConvert.convertErrorMov"),
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedUri(null);
+    setSelectedName("");
+    setStatusText(t("common.ready"));
   };
 
   return (
@@ -105,9 +140,7 @@ export default function FormatConvertSection({
           </View>
         </View>
 
-        <Text style={styles.chevron}>
-          {isOpen ? "▲" : "▼"}
-        </Text>
+        <Text style={styles.chevron}>{isOpen ? "▲" : "▼"}</Text>
       </TouchableOpacity>
 
       {isOpen && (
@@ -128,25 +161,46 @@ export default function FormatConvertSection({
                 {t("formatConvert.selected")}: {selectedName}
               </Text>
 
-              <TouchableOpacity
-                style={[
-                  styles.actionButton,
-                  isLoading && styles.disabledButton,
-                ]}
-                onPress={convertVideoToMp4}
-                disabled={isLoading}
-              >
-                <Text style={styles.actionButtonText}>
-                  {t("formatConvert.convert")}
+              {isMov && (
+                <TouchableOpacity
+                  style={[
+                    styles.actionButton,
+                    isLoading && styles.disabledButton,
+                  ]}
+                  onPress={convertVideoToMp4}
+                  disabled={isLoading}
+                >
+                  <Text style={styles.actionButtonText}>
+                    {isLoading
+                      ? t("formatConvert.converting")
+                      : t("formatConvert.convert")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+              {isMp4 && (
+                <TouchableOpacity
+                  style={[styles.movButton, isLoading && styles.disabledButton]}
+                  onPress={convertVideoToMov}
+                  disabled={isLoading}
+                >
+                  <Text style={styles.actionButtonText}>
+                    {isLoading
+                      ? t("formatConvert.convertingMov")
+                      : t("formatConvert.convertMov")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+              {!isMov && !isMp4 && (
+                <Text style={styles.fileInfoText}>
+                  {t("formatConvert.unsupportedFormat")}
                 </Text>
-              </TouchableOpacity>
+              )}
 
               <TouchableOpacity
                 style={styles.resetButton}
-                onPress={() => {
-                  setSelectedUri(null);
-                  setSelectedName("");
-                }}
+                onPress={clearSelection}
                 disabled={isLoading}
               >
                 <Text style={styles.resetButtonText}>
@@ -184,9 +238,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   accordionIcon: { fontSize: 22 },
-  accordionTitle: { color: "#fff", fontSize: 16, fontWeight: "700" },
-  accordionSub: { color: "#8E8E93", fontSize: 12, marginTop: 2 },
-  chevron: { color: "#8E8E93", fontSize: 12, marginLeft: 8 },
+  accordionTitle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  accordionSub: {
+    color: "#8E8E93",
+    fontSize: 12,
+    marginTop: 2,
+  },
+  chevron: {
+    color: "#8E8E93",
+    fontSize: 12,
+    marginLeft: 8,
+  },
   accordionBody: {
     paddingHorizontal: 16,
     paddingBottom: 16,
@@ -207,14 +273,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
-  disabledButton: { backgroundColor: "#48484A" },
-  actionButtonText: { color: "#fff", fontSize: 15, fontWeight: "600" },
+  movButton: {
+    backgroundColor: "#34C759",
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  disabledButton: {
+    backgroundColor: "#48484A",
+  },
+  actionButtonText: {
+    color: "#fff",
+    fontSize: 15,
+    fontWeight: "600",
+  },
   resetButton: {
     backgroundColor: "#FF3B30",
     padding: 13,
     borderRadius: 10,
     alignItems: "center",
   },
-  resetButtonText: { color: "#fff", fontSize: 14, fontWeight: "600" },
-  fileInfoText: { color: "#aaa", fontSize: 13 },
+  resetButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  fileInfoText: {
+    color: "#aaa",
+    fontSize: 13,
+  },
 });

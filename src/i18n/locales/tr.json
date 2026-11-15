@@ -29,8 +29,8 @@
     "removeArtwork": "Kaldır",
     "artworkAdding": "Albüm kapağı M4A dosyasına ekleniyor...",
     "extractTitle": "🎵 M4A Ses Ayıklama",
-    "extract": "M4A'ya Çevir",
-    "extractLoading": "Videodan ses çıkarılıyor...",
+    "extract": "M4A -> Dönüştür",
+    "extractLoading": "M4A -> Dönüştürülüyor...",
     "extractSuccess": "Ses başarıyla çıkarıldı! Boyut: {{size}}",
     "extractArtworkSuccess": "Ses ve albüm kapağı hazır! Boyut: {{size}}",
     "extractFailed": "M4A oluşturma başarısız oldu.",
@@ -51,7 +51,11 @@
     "compressFailed": "Sıkıştırma başarısız oldu.",
     "compressError": "Video sıkıştırılırken bir sorun oluştu.",
     "compressShare": "Sıkıştırılmış videoyu paylaş",
-    "reset": "Videoyu Kapat / Yeni Seç"
+    "reset": "Videoyu Kapat / Yeni Seç",
+    "trimLargeFileTitle": "Video Boyutu Uyarısı",
+    "trimLargeFileMessage": "Seçtiğin video {{size}} boyutunda. Büyük videolar bazı Android cihazlarda kesilirken sorun çıkarabilir. Devam etmek istiyor musun?",
+    "trimLargeFileCancel": "Vazgeç",
+    "trimLargeFileContinue": "Devam Et"
   },
   "common": {
     "cancel": "İptal",
@@ -62,9 +66,10 @@
     "selectFile": "Dosya Seç",
     "ready": "Yeni işlem için hazır."
   },
+
   "formatConvert": {
     "title": "Format Dönüştürme",
-    "subtitle": "MOV → MP4 dönüştürücü",
+    "subtitle": "MOV → MP4 ve MP4 → MOV dönüştürücü",
     "selectFile": "Dosya Seç (MOV / MP4)",
     "fileSelected": "Dönüştürülecek video seçildi.",
     "selected": "Seçilen",
@@ -72,6 +77,12 @@
     "converting": "MOV → MP4 dönüştürülüyor...",
     "success": "MP4 dönüştürme başarılı!",
     "share": "MP4 videoyu paylaş",
+    "convertingMov": "MP4 → MOV dönüştürülüyor...",
+    "successMov": "MOV dönüştürme başarılı!",
+    "convertMov": "MOV Olarak Dönüştür",
+    "shareMov": "MOV videoyu paylaş",
+    "convertErrorMov": "Video MOV formatına dönüştürülemedi.",
+    "unsupportedFormat": "Desteklenmeyen dosya formatı.",
     "clear": "Dosyayı Temizle",
     "errorTitle": "Dönüştürme Hatası",
     "pickError": "Dosya seçilirken bir sorun oluştu.",
@@ -83,7 +94,7 @@
     "addVideo": "+ Video Ekle",
     "selectedCount": "Seçilen video sayısı: {{count}}",
     "fileSelected": "{{count}} video seçildi.",
-    "merge": "Videoları Birleştir ve Paylaş",
+    "merge": "Videoları Birleştir",
     "clear": "Listeyi Temizle",
     "converting": "Videolar birleştiriliyor...",
     "success": "Videolar birleştirildi! Toplam süre: {{duration}}",
@@ -125,7 +136,26 @@
     "languageChanged": "Uygulama dili değiştirildi."
   },
   "splash": {
-  "subtitle": "Medya Düzenleme ve Dönüştürme Merkezi",
-  "loading": "Yükleniyor..."
-}
+    "subtitle": "Medya Düzenleme ve Dönüştürme Merkezi",
+    "loading": "Yükleniyor..."
+  },
+  "audioConvert": {
+    "title": "Ses Dönüştürme",
+    "subtitle": "MP3 → M4A ses dönüştürücü",
+    "selectAudio": "MP3 Dosyası Seç",
+    "selectAnother": "Başka MP3 Dosyası Seç",
+    "selected": "Seçilen",
+    "fileSelected": "MP3 dosyası seçildi.",
+    "mp3Only": "Lütfen yalnızca MP3 formatında bir dosya seç.",
+    "pickError": "MP3 dosyası seçilirken bir sorun oluştu.",
+    "convert": "M4A'ya Dönüştür",
+    "converting": "MP3 → M4A dönüştürülüyor...",
+    "success": "Ses başarıyla M4A formatına dönüştürüldü!",
+    "failed": "Ses dönüştürme başarısız oldu.",
+    "share": "M4A ses dosyasını paylaş",
+    "shareError": "M4A dosyası paylaşılırken bir sorun oluştu.",
+    "clear": "Dosya Seçimini Temizle",
+    "errorTitle": "Ses Dönüştürme Hatası",
+    "convertError": "MP3 dosyası M4A formatına dönüştürülemedi."
+  }
 }

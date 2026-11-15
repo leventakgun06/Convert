@@ -1,15 +1,13 @@
-
-import { ThemedView } from "@/components/themed-view";
+import { i18nReady } from "@/i18n";
 import { useFonts } from "expo-font";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, LogBox, useColorScheme } from "react-native";
-import { i18nReady } from "@/i18n";
+import { ActivityIndicator, LogBox, View, useColorScheme } from "react-native";
 
 LogBox.ignoreAllLogs();
 
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
 
 export default function TabLayout() {
   const [loaded] = useFonts({
@@ -19,7 +17,6 @@ export default function TabLayout() {
   });
 
   const [languageLoaded, setLanguageLoaded] = useState(false);
-
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -27,16 +24,11 @@ export default function TabLayout() {
 
     i18nReady
       .then(() => {
-        if (isMounted) {
-          setLanguageLoaded(true);
-        }
+        if (isMounted) setLanguageLoaded(true);
       })
       .catch((error) => {
         console.error("Dil sistemi başlatılamadı:", error);
-
-        if (isMounted) {
-          setLanguageLoaded(true);
-        }
+        if (isMounted) setLanguageLoaded(true);
       });
 
     return () => {
@@ -46,17 +38,22 @@ export default function TabLayout() {
 
   useEffect(() => {
     if (loaded && languageLoaded) {
-      SplashScreen.hideAsync();
+      void SplashScreen.hideAsync();
     }
   }, [loaded, languageLoaded]);
 
   if (!loaded || !languageLoaded) {
     return (
-      <ThemedView
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#121212",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <ActivityIndicator size="large" />
-      </ThemedView>
+        <ActivityIndicator size="large" color="#FFFFFF" />
+      </View>
     );
   }
 

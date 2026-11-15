@@ -1,22 +1,11 @@
-
 import * as DocumentPicker from "expo-document-picker";
 import { Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MediaToolkit } from "react-native-media-toolkit";
-import {
-  formatFileSize,
-  formatTime,
-  toFilePath,
-} from "../utils/media-helpers";
+import { formatFileSize, formatTime, toFilePath } from "../utils/media-helpers";
 
 type MergeVideo = {
   uri: string;
@@ -73,10 +62,7 @@ export default function VideoMergeSection({
       }
     } catch (error) {
       console.error("Video seçme hatası:", error);
-      Alert.alert(
-        t("common.error"),
-        t("videoMerge.pickError"),
-      );
+      Alert.alert(t("common.error"), t("videoMerge.pickError"));
     }
   };
 
@@ -102,10 +88,7 @@ export default function VideoMergeSection({
 
   const mergeSelectedVideos = async () => {
     if (mergeVideos.length < 2) {
-      Alert.alert(
-        t("videoMerge.warningTitle"),
-        t("videoMerge.minimumVideos"),
-      );
+      Alert.alert(t("videoMerge.warningTitle"), t("videoMerge.minimumVideos"));
       return;
     }
 
@@ -137,9 +120,7 @@ export default function VideoMergeSection({
 
       Alert.alert(
         t("videoMerge.errorTitle"),
-        error instanceof Error
-          ? error.message
-          : t("videoMerge.pickError"),
+        error instanceof Error ? error.message : t("videoMerge.pickError"),
       );
     } finally {
       setIsLoading(false);
@@ -157,19 +138,13 @@ export default function VideoMergeSection({
           <Text style={styles.accordionIcon}>🎞️</Text>
 
           <View>
-            <Text style={styles.accordionTitle}>
-              {t("videoMerge.title")}
-            </Text>
+            <Text style={styles.accordionTitle}>{t("videoMerge.title")}</Text>
 
-            <Text style={styles.accordionSub}>
-              {t("videoMerge.subtitle")}
-            </Text>
+            <Text style={styles.accordionSub}>{t("videoMerge.subtitle")}</Text>
           </View>
         </View>
 
-        <Text style={styles.chevron}>
-          {isOpen ? "▲" : "▼"}
-        </Text>
+        <Text style={styles.chevron}>{isOpen ? "▲" : "▼"}</Text>
       </TouchableOpacity>
 
       {isOpen && (
@@ -216,9 +191,7 @@ export default function VideoMergeSection({
                     <TouchableOpacity
                       style={styles.moveButton}
                       onPress={() => moveMergeVideo(index, 1)}
-                      disabled={
-                        index === mergeVideos.length - 1 || isLoading
-                      }
+                      disabled={index === mergeVideos.length - 1 || isLoading}
                     >
                       <Text style={styles.moveButtonText}>↓</Text>
                     </TouchableOpacity>
@@ -235,15 +208,14 @@ export default function VideoMergeSection({
               ))}
 
               <TouchableOpacity
-                style={[
-                  styles.mergeButton,
-                  isLoading && styles.disabledButton,
-                ]}
+                style={[styles.mergeButton, isLoading && styles.disabledButton]}
                 onPress={mergeSelectedVideos}
                 disabled={isLoading || mergeVideos.length < 2}
               >
                 <Text style={styles.actionButtonText}>
-                  {t("videoMerge.merge")}
+                  {isLoading
+                    ? t("videoMerge.converting")
+                    : t("videoMerge.merge")}
                 </Text>
               </TouchableOpacity>
 
