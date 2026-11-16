@@ -1,7 +1,9 @@
+
 const {
   withAndroidStyles,
   withDangerousMod,
   withProjectBuildGradle,
+  withGradleProperties,
 } = require("@expo/config-plugins");
 
 const fs = require("fs");
@@ -11,7 +13,7 @@ const withAndroidEmptySplash = (config) => {
   config = withAndroidStyles(config, (config) => {
     const styles = config.modResults.resources.style;
     const splashStyle = styles.find(
-      (style) => style.$?.name === "Theme.App.SplashScreen",
+      (style) => style.$?.name === "Theme.App.SplashScreen"
     );
 
     if (!splashStyle) {
@@ -21,7 +23,7 @@ const withAndroidEmptySplash = (config) => {
     splashStyle.item = splashStyle.item || [];
 
     const iconItem = splashStyle.item.find(
-      (item) => item.$?.name === "windowSplashScreenAnimatedIcon",
+      (item) => item.$?.name === "windowSplashScreenAnimatedIcon"
     );
 
     if (iconItem) {
@@ -41,7 +43,7 @@ const withAndroidEmptySplash = (config) => {
     async (config) => {
       const drawableDir = path.join(
         config.modRequest.platformProjectRoot,
-        "app/src/main/res/drawable",
+        "app/src/main/res/drawable"
       );
 
       fs.mkdirSync(drawableDir, { recursive: true });
@@ -52,7 +54,7 @@ const withAndroidEmptySplash = (config) => {
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@android:color/transparent"/>
-</shape>`,
+</shape>`
       );
 
       return config;
@@ -74,11 +76,33 @@ const withAndroidEmptySplash = (config) => {
 
       contents = contents.replace(
         pattern,
-        (match) => `${match}\n${repository}`,
+        (match) => `${match}\n${repository}`
       );
     }
 
     config.modResults.contents = contents;
+    return config;
+  });
+
+  // Android 9 LogSessionId / R8 horizontal class merging düzeltmesi
+  config = withGradleProperties(config, (config) => {
+    const property =
+      "systemProp.com.android.tools.r8.disableHorizontalClassMerging";
+
+    const existing = config.modResults.find(
+      (item) => item.type === "property" && item.key === property
+    );
+
+    if (existing) {
+      existing.value = "true";
+    } else {
+      config.modResults.push({
+        type: "property",
+        key: property,
+        value: "true",
+      });
+    }
+
     return config;
   });
 
