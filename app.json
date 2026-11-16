@@ -47,11 +47,22 @@
       "expo-video",
       "expo-sharing",
       "expo-document-picker",
-      "expo-localization"
+      "expo-localization",
+      "./plugins/with-android-empty-splash"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "adadcb25-9649-4d78-87f3-cda63ab06fc6"
+      }
     }
   }
 }
